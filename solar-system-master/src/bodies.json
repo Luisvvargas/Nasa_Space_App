@@ -1,0 +1,31 @@
+[
+    {
+      "name": "Halley's Comet",
+      "radius": 5,
+      "distance": 35,
+      "period": 75.3,
+      "daylength": 6.5,
+      "textures": {
+        "map": "./textures/comet.jpg"
+      },
+      "type": "comet",
+      "tilt": 45,
+      "orbits": "Sun",
+      "traversable": false
+    },
+    {
+      "name": "Ceres",
+      "radius": 473,
+      "distance": 414,
+      "period": 4.6,
+      "daylength": 9.1,
+      "textures": {
+        "map": "./textures/asteroid.jpg"
+      },
+      "type": "asteroid",
+      "tilt": 3,
+      "orbits": "Sun",
+      "traversable": false
+    }
+  ]
+  

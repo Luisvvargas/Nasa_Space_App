@@ -1,5 +1,6 @@
 import { PlanetaryObject } from "./planetary-object";
 import planetData from "../planets.json";
+import bodyData from "../bodies.json";  // Import comets/asteroids data
 import { Body } from "./planetary-object";
 import { setTextureCount } from "./textures";
 
@@ -11,7 +12,7 @@ export const createSolarSystem = (
   const solarSystem: SolarSystem = {};
   let textureCount = 0;
 
-  const planets: Body[] = planetData;
+  const planets: Body[] = [...planetData, ...bodyData]; // Combine planets and comets/asteroids
   const traversable: string[] = [];
 
   for (const planet of planets) {
