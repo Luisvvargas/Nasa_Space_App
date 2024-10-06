@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { Label, PointOfInterest } from "./label";
-import { createPath, createEccentricPath } from "./path";  // Import eccentric path
-import { createRingMesh } from "./rings";
+import { createPath } from "./path"; // Import eccentric path
 import { loadTexture } from "./textures";
 
 export interface Body {
@@ -55,11 +54,15 @@ export class PlanetaryObject {
   map: THREE.Texture;
   bumpMap?: THREE.Texture;
   specularMap?: THREE.Texture;
+  category: string;
+  description: string;
+  namesake: string;
+  moons: number;
   labels: Label;
   hitbox: THREE.Mesh;
 
   constructor(body: Body) {
-    const { radius, distance, period, daylength, orbits, type, tilt } = body;
+    const { radius, distance, period, daylength, orbits, type, tilt, category, description, namesake, moons } = body;
 
     this.radius = normaliseRadius(radius);
     this.distance = normaliseDistance(distance);
@@ -67,6 +70,10 @@ export class PlanetaryObject {
     this.daylength = daylength;
     this.orbits = orbits;
     this.type = type;
+    this.category = category;
+    this.description = description;
+    this.namesake = namesake;
+    this.moons = moons;
     this.tilt = degreesToRadians(tilt);
     this.rng = body.offset ?? Math.random() * 2 * Math.PI;
 
@@ -81,7 +88,7 @@ export class PlanetaryObject {
     this.hitbox = this.createHitbox();
 
     if (this.type === "comet" || this.type === "asteroid") {
-      this.path = createEccentricPath(this.distance, Math.random() * 0.5 + 0.3);
+      this.path = createPath(this.distance);
     } else if (this.orbits) {
       this.path = createPath(this.distance);
     }

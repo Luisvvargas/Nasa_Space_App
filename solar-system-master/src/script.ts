@@ -74,6 +74,40 @@ const cameraPositions = {
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
+// Function to show planet information
+const showPlanetInfo = (planetName: string) => {
+  const planet = solarSystem[planetName];
+
+  // Update the planet info panel
+  const infoPanel = document.getElementById("planet-info") as HTMLElement;
+  const planetNameElem = document.getElementById("planet-name") as HTMLElement;
+  const planetRadiusElem = document.getElementById("planet-radius") as HTMLElement;
+  const planetDistanceElem = document.getElementById("planet-distance") as HTMLElement;
+  const planetPeriodElem = document.getElementById("planet-period") as HTMLElement;
+  const planetDaylengthElem = document.getElementById("planet-daylength") as HTMLElement;
+  const planetCategory = document.getElementById("planet-category") as HTMLElement;
+  const planetDescription = document.getElementById("planet-description") as HTMLElement;
+  const planetNamesake = document.getElementById("planet-namesake") as HTMLElement;
+  const planetMoons = document.getElementById("planet-moons") as HTMLElement;
+
+
+
+  planetNameElem.textContent = planetName;
+  planetRadiusElem.textContent = `Radius: ${planet.radius} km`;
+  planetDistanceElem.textContent = `Distance from Sun: ${planet.distance} AU`;
+  planetPeriodElem.textContent = `Orbital Period: ${planet.period} years`;
+  planetDaylengthElem.textContent = `Day Length: ${planet.daylength} hours`;
+  planetCategory.textContent = `Category: ${planet.category} hours`;
+  planetDescription.textContent = `Description: ${planet.description} hours`;
+  planetNamesake.textContent = `Namesake: ${planet.namesake}`;
+  planetMoons.textContent = `Moons: ${planet.moons}`;
+
+
+  // Show the info panel
+  infoPanel.style.display = "block";
+};
+
+// Update the click event to show planet info
 window.addEventListener("click", (event) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -93,6 +127,9 @@ window.addEventListener("click", (event) => {
     if (clickedPlanet && options.focus !== clickedPlanet) {
       changeFocus(options.focus, clickedPlanet);
       options.focus = clickedPlanet;
+
+      // Show the planet information
+      showPlanetInfo(clickedPlanet);
     }
   }
 });
@@ -201,7 +238,6 @@ let speedFactor = 1;
 // Variable `elapsedTime` para rastrear el tiempo transcurrido
 let elapsedTime = 0;
 
-
 // Generate travel options dynamically
 const menuTravel = document.getElementById("menu-travel");
 const generateTravelOptions = () => {
@@ -210,12 +246,16 @@ const generateTravelOptions = () => {
   bodyList.forEach((bodyName) => {
     const option = document.createElement("button");
     option.textContent = bodyName;
-    option.className = "w-full text-left px-4 py-2 text-sm text-white focus:outline-none transition-transform duration-200 transform hover:text- hover:scale-105"; // Hover: color y tamaño
+    option.className = "w-full text-left px-4 py-2 text-sm text-white focus:outline-none transition-transform duration-200 transform hover:text-black hover:scale-105"; // Hover: color y tamaño
     option.setAttribute("role", "menuitem");
     
     option.addEventListener("click", () => {
       changeFocus(options.focus, bodyName);
       options.focus = bodyName;
+
+      // Show the planet information when selected from the travel menu
+      showPlanetInfo(bodyName);
+
       menuTravel?.classList.add("hidden");
     });
 

@@ -25,7 +25,14 @@
     "textures": {
       "map": "./textures/mercury.jpg",
       "bump": "./textures/mercury-bump.jpg"
-    }
+    },
+    "category": "Terrestrial",
+    "description":
+      "The smallest planet in our solar system and closest to the Sun.",
+    "earthYears": 0.24,
+    "distanceFromSun": 57.91,
+    "namesake": "Named after the Roman messenger god.",
+    "moons": 0
   },
   {
     "name": "Venus",
@@ -40,7 +47,14 @@
     "textures": {
       "map": "./textures/venus.jpg",
       "bump": "./textures/venus-bump.jpg"
-    }
+    },
+    "category": "Terrestrial",
+    "description":
+      "The second planet from the Sun with a thick, toxic atmosphere.",
+    "earthYears": 0.62,
+    "distanceFromSun": 108.2,
+    "namesake": "Named after the Roman goddess of love and beauty.",
+    "moons": 0
   },
   {
     "name": "Earth",
@@ -58,7 +72,14 @@
       "specular": "./textures/earth-specular.jpg",
       "atmosphere": "./textures/earth-clouds.jpg",
       "atmosphereAlpha": "./textures/earth-clouds-alpha.jpg"
-    }
+    },
+    "category": "Terrestrial",
+    "description": "Our home planet, the only known planet to support life.",
+    "earthYears": 1,
+    "distanceFromSun": 149.6,
+    "namesake":
+      "The English/German word 'Earth' originates from 'eor(th)e' and 'ertha'.",
+    "moons": 1
   },
   {
     "name": "Moon (Earth's)",
@@ -96,6 +117,13 @@
       "map": "./textures/mars.jpg",
       "bump": "./textures/mars-bump.jpg"
     },
+    "category": "Terrestrial",
+    "description":
+      "The Red Planet, known for its iron oxide soil and polar ice caps.",
+    "earthYears": 1.88,
+    "distanceFromSun": 227.9,
+    "namesake": "Named after the Roman god of war.",
+    "moons": 2,
     "labels": [
       { "name": "Olympus Mons", "type": "mountain", "y": 0.59, "z": 0.52 },
       { "name": "Tharsis Montes", "type": "mountain", "y": 1.13, "z": 0.28 },
@@ -117,6 +145,13 @@
     "textures": {
       "map": "./textures/jupiter.jpg"
     },
+    "category": "Gas Giant",
+    "description":
+      "The largest planet in our solar system with a massive storm known as the Great Red Spot.",
+    "earthYears": 11.86,
+    "distanceFromSun": 778.5,
+    "namesake": "Named after the king of the Roman gods.",
+    "moons": 95,
     "labels": [{ "name": "Great Red Spot", "y": -0.84, "z": -0.41 }]
   },
   {
@@ -132,6 +167,13 @@
     "textures": {
       "map": "./textures/saturn.jpg"
     },
+    "category": "Gas Giant",
+    "description":
+      "Famous for its prominent ring system, Saturn is the second largest planet in our solar system.",
+    "earthYears": 29.45,
+    "distanceFromSun": 1429,
+    "namesake": "Named after the Roman god of agriculture and wealth.",
+    "moons": 145,
     "labels": [{ "name": "Saturn's Hexagon", "y": 0, "z": 1.57 }]
   },
   {
@@ -144,6 +186,13 @@
     "orbits": "Sun",
     "tilt": 82.23,
     "traversable": true,
+    "category": "Ice Giant",
+    "description":
+      "An ice giant with a blue-green hue due to methane gas in its atmosphere.",
+    "earthYears": 84.0,
+    "distanceFromSun": 2871, 
+    "namesake": "Named after the Greek god of the sky.",
+    "moons": 27,
     "textures": {
       "map": "./textures/uranus.jpg"
     }
@@ -161,6 +210,13 @@
     "textures": {
       "map": "./textures/neptune.jpg"
     },
+    "category": "Ice Giant",
+    "description":
+      "The farthest planet from the Sun, known for its deep blue color and supersonic winds.",
+    "earthYears": 164.8,
+    "distanceFromSun": 4495,
+    "namesake": "Named after the Roman god of the sea.",
+    "moons": 14,
     "labels": [{ "name": "Great Dark Spot", "y": 0.21, "z": -0.18 }]
   },
   {
@@ -178,7 +234,7 @@
     }
   },
   {
-    "name": "Ganymede",
+    "name": "Ganymede (Jupiter's)",
     "radius": 2634,
     "distance": 1.07,
     "period": 7.15,
@@ -192,7 +248,7 @@
     }
   },
   {
-    "name": "Titan",
+    "name": "Titan (Saturn's)",
     "radius": 2574,
     "distance": 1.2,
     "period": 15.95,
@@ -206,7 +262,7 @@
     }
   },
   {
-    "name": "Callisto",
+    "name": "Callisto (Jupiter's)",
     "radius": 2410,
     "distance": 1.88,
     "period": 16.69,
@@ -220,7 +276,7 @@
     }
   },
   {
-    "name": "Io",
+    "name": "Io (Jupiter's)",
     "radius": 1821,
     "distance": 0.42,
     "period": 1.77,
@@ -234,7 +290,7 @@
     }
   },
   {
-    "name": "Europa",
+    "name": "Europa (Jupiter's)",
     "radius": 1560,
     "distance": 0.67,
     "period": 3.55,
@@ -248,7 +304,7 @@
     }
   },
   {
-    "name": "Triton",
+    "name": "Triton (Neptune's)",
     "radius": 1353,
     "distance": 0.35,
     "period": 5.87,

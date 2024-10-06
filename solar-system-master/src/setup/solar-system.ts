@@ -1,7 +1,6 @@
-import { PlanetaryObject } from "./planetary-object";
+import bodyData from "../bodies.json"; // Import comets/asteroids data
 import planetData from "../planets.json";
-import bodyData from "../bodies.json";  // Import comets/asteroids data
-import { Body } from "./planetary-object";
+import { Body, PlanetaryObject } from "./planetary-object";
 import { setTextureCount } from "./textures";
 
 export type SolarSystem = Record<string, PlanetaryObject>;
