@@ -210,7 +210,7 @@ const generateTravelOptions = () => {
   bodyList.forEach((bodyName) => {
     const option = document.createElement("button");
     option.textContent = bodyName;
-    option.className = "w-full text-left px-4 py-2 text-sm text-white focus:outline-none transition-transform duration-200 transform hover:text-black hover:scale-105"; // Hover: color y tamaño
+    option.className = "w-full text-left px-4 py-2 text-sm text-white focus:outline-none transition-transform duration-200 transform hover:text- hover:scale-105"; // Hover: color y tamaño
     option.setAttribute("role", "menuitem");
     
     option.addEventListener("click", () => {
