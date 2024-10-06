@@ -200,6 +200,7 @@ bloomComposer.addPass(bloomPass);
 // Animate
 const clock = new THREE.Clock();
 let elapsedTime = 0;
+let speedFactor = 1;
 
 // Update "Return to Solar System" button
 document.getElementById("btn-sun")?.addEventListener("click", () => {
@@ -207,6 +208,12 @@ document.getElementById("btn-sun")?.addEventListener("click", () => {
     changeFocus(options.focus, "SolarSystem");
     options.focus = "SolarSystem";
   }
+});
+
+document.getElementById("btn-speed")?.addEventListener("click", () => {
+  speedFactor = speedFactor >= 16 ? 1 : speedFactor * 2;
+  options.speed = 0.125 * speedFactor;
+  (document.getElementById("btn-speed") as HTMLElement).innerText = ` - x${speedFactor} - `;
 });
 
 (function tick() {
