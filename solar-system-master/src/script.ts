@@ -32,15 +32,12 @@ const sizes = {
 };
 
 window.addEventListener("resize", () => {
-  // Update sizes
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
 
-  // Update camera
   camera.aspect = sizes.width / sizes.height;
   camera.updateProjectionMatrix();
 
-  // Update renderers
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   bloomComposer.setSize(sizes.width, sizes.height);
@@ -77,7 +74,6 @@ const cameraPositions = {
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-// Event listener for mouse clicks
 window.addEventListener("click", (event) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -162,7 +158,7 @@ controls.enableDamping = true;
 controls.enablePan = false;
 controls.target.copy(cameraPositions.solarSystem.target);
 
-const minDistance = 20; // Inicialmente más cerca para la vista del sistema solar
+const minDistance = 20;
 controls.minDistance = minDistance;
 controls.maxDistance = minDistance * 5;
 
@@ -197,12 +193,43 @@ bloomComposer.renderToScreen = true;
 bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
-// Animate
 const clock = new THREE.Clock();
-let elapsedTime = 0;
+
+// Variable para controlar la velocidad
 let speedFactor = 1;
 
-// Update "Return to Solar System" button
+// Variable `elapsedTime` para rastrear el tiempo transcurrido
+let elapsedTime = 0;
+
+
+// Generate travel options dynamically
+const menuTravel = document.getElementById("menu-travel");
+const generateTravelOptions = () => {
+  const bodyList = Object.keys(solarSystem);
+
+  bodyList.forEach((bodyName) => {
+    const option = document.createElement("button");
+    option.textContent = bodyName;
+    option.className = "w-full text-left px-4 py-2 text-sm text-white focus:outline-none transition-transform duration-200 transform hover:text-black hover:scale-105"; // Hover: color y tamaño
+    option.setAttribute("role", "menuitem");
+    
+    option.addEventListener("click", () => {
+      changeFocus(options.focus, bodyName);
+      options.focus = bodyName;
+      menuTravel?.classList.add("hidden");
+    });
+
+    menuTravel?.appendChild(option);
+  });
+};
+
+generateTravelOptions();
+
+document.getElementById("btn-travel")?.addEventListener("click", () => {
+  const menu = document.getElementById("menu-travel");
+  menu?.classList.toggle("hidden");
+});
+
 document.getElementById("btn-sun")?.addEventListener("click", () => {
   if (options.focus !== "SolarSystem") {
     changeFocus(options.focus, "SolarSystem");
