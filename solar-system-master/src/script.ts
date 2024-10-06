@@ -61,6 +61,7 @@ Object.values(solarSystem).forEach((planet) => {
   planet.hitbox = hitbox; // Store the hitbox in the planet object for later use
 });
 
+
 // Raycaster for detecting clicks on planets
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
