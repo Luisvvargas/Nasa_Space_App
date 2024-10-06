@@ -64,7 +64,7 @@ Object.values(solarSystem).forEach((planet) => {
 // Camera positions
 const cameraPositions = {
   solarSystem: {
-    position: new THREE.Vector3(0, 50, 50), // Posición inicial más cercana al sistema solar
+    position: new THREE.Vector3(0, 20, 20), // Ajustado para comenzar más cerca del sistema solar
     target: new THREE.Vector3(0, 0, 0)
   },
   default: {
@@ -120,7 +120,7 @@ const changeFocus = (oldFocus: string, newFocus: string) => {
 
   let minDistance = selectedPlanet.getMinDistance();
   if (newFocus === "SolarSystem") {
-    minDistance = 100; // Ajustado para vista más cercana al sistema solar
+    minDistance = 20; // Ajustado para vista más cercana al sistema solar
   }
   controls.minDistance = minDistance;
   controls.maxDistance = minDistance * 5;
@@ -162,7 +162,7 @@ controls.enableDamping = true;
 controls.enablePan = false;
 controls.target.copy(cameraPositions.solarSystem.target);
 
-const minDistance = 50; // Inicialmente más cerca para la vista del sistema solar
+const minDistance = 20; // Inicialmente más cerca para la vista del sistema solar
 controls.minDistance = minDistance;
 controls.maxDistance = minDistance * 5;
 
