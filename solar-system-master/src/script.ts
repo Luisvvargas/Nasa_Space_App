@@ -10,7 +10,6 @@ import { createLights } from "./setup/lights";
 import { createSolarSystem } from "./setup/solar-system";
 import './style.scss';
 
-
 THREE.ColorManagement.enabled = false;
 
 // Canvas
@@ -178,6 +177,7 @@ bloomComposer.addPass(bloomPass);
 // Animate
 const clock = new THREE.Clock();
 let elapsedTime = 0;
+let speedFactor = 1;
 
 // Agregar listener al botón "Regresar al Sol"
 document.getElementById("btn-sun")?.addEventListener("click", () => {
@@ -185,6 +185,13 @@ document.getElementById("btn-sun")?.addEventListener("click", () => {
     changeFocus(options.focus, "Sun");
     options.focus = "Sun";
   }
+});
+
+// Agregar listener al botón "Aumentar Velocidad"
+document.getElementById("btn-speed")?.addEventListener("click", () => {
+  speedFactor = speedFactor >= 16 ? 1 : speedFactor * 2; // Incrementar velocidad x2, x4, x8, luego regresar a x1
+  options.speed = 0.125 * speedFactor;
+  (document.getElementById("btn-speed") as HTMLElement).innerText = ` - x${speedFactor} - `;
 });
 
 (function tick() {
@@ -226,9 +233,10 @@ document.getElementById("btn-sun")?.addEventListener("click", () => {
   currentBody.labels.update(camera);
 
   // Render
-  bloomComposer.render();
-  labelRenderer.render(scene, camera);
-
-  // Call tick again on the next frame
-  window.requestAnimationFrame(tick);
-})();
+    bloomComposer.render();
+    labelRenderer.render(scene, camera);
+  
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick);
+  })();
+  
