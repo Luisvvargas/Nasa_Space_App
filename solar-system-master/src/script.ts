@@ -184,9 +184,17 @@ document.getElementById("btn-sun")?.addEventListener("click", () => {
   if (options.focus !== "Sun") {
     changeFocus(options.focus, "Sun");
     options.focus = "Sun";
+
+    // Posicionar la cámara justo arriba del Sol
+    const sunPosition = new THREE.Vector3();
+    solarSystem["Sun"].mesh.getWorldPosition(sunPosition);
+
+    // Establecer la posición de la cámara sobre el sol en el eje Y
+    camera.position.set(sunPosition.x, sunPosition.y + 50, sunPosition.z);
+    controls.target.copy(sunPosition); // Establecer el objetivo de la cámara al Sol
+    controls.update();
   }
 });
-
 (function tick() {
   elapsedTime += clock.getDelta() * options.speed;
 
