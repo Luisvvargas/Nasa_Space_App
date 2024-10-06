@@ -62,7 +62,7 @@ export class PlanetaryObject {
   hitbox: THREE.Mesh;
 
   constructor(body: Body) {
-    const { radius, distance, period, daylength, orbits, type, tilt, category, description, namesake, moons } = body;
+    const { radius, distance, period, daylength, orbits, type, tilt, category, description, namesake, moons, realRadius, realDistance } = body;
 
     this.radius = normaliseRadius(radius);
     this.distance = normaliseDistance(distance);
@@ -74,6 +74,8 @@ export class PlanetaryObject {
     this.description = description;
     this.namesake = namesake;
     this.moons = moons;
+    this.realRadius = realRadius;
+    this.realDistance = realDistance;
     this.tilt = degreesToRadians(tilt);
     this.rng = body.offset ?? Math.random() * 2 * Math.PI;
 
