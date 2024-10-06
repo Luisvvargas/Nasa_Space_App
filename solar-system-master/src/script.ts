@@ -10,7 +10,6 @@ import { createLights } from "./setup/lights";
 import { createSolarSystem } from "./setup/solar-system";
 import './style.scss';
 
-
 THREE.ColorManagement.enabled = false;
 
 // Canvas
@@ -53,14 +52,26 @@ const [solarSystem, planetNames] = createSolarSystem(scene);
 
 // Create hitboxes for each planet
 Object.values(solarSystem).forEach((planet) => {
-  const hitboxGeometry = new THREE.SphereGeometry(planet.radius * 1.5, 32, 32); // Increase hitbox size by 50%
+  const hitboxGeometry = new THREE.SphereGeometry(planet.radius * 1.5, 32, 32);
   const hitboxMaterial = new THREE.MeshBasicMaterial({
-    visible: false, // Make the hitbox invisible
+    visible: false,
   });
   const hitbox = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
-  planet.mesh.add(hitbox); // Attach the hitbox to the planet
-  planet.hitbox = hitbox; // Store the hitbox in the planet object for later use
+  planet.mesh.add(hitbox);
+  planet.hitbox = hitbox;
 });
+
+// Camera positions
+const cameraPositions = {
+  solarSystem: {
+    position: new THREE.Vector3(0, 50, 50), // Posición inicial más cercana al sistema solar
+    target: new THREE.Vector3(0, 0, 0)
+  },
+  default: {
+    position: new THREE.Vector3(0, 50, 100),
+    target: new THREE.Vector3(0, 0, 0)
+  }
+};
 
 // Raycaster for detecting clicks on planets
 const raycaster = new THREE.Raycaster();
@@ -68,81 +79,92 @@ const mouse = new THREE.Vector2();
 
 // Event listener for mouse clicks
 window.addEventListener("click", (event) => {
-  // Calculate mouse position in normalized device coordinates (-1 to +1)
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-  // Update the raycaster with the current camera and mouse position
   raycaster.setFromCamera(mouse, camera);
 
-  // Check for intersections with planetary hitboxes (not the visible planet mesh)
   const intersects = raycaster.intersectObjects(
-    Object.values(solarSystem).map((obj) => obj.hitbox) // Use hitbox instead of mesh
+    Object.values(solarSystem).map((obj) => obj.hitbox)
   );
 
   if (intersects.length > 0) {
-    // Get the first intersected object (closest to the camera)
     const intersectedObject = intersects[0].object;
-
-    // Find the planet or moon that was clicked
     const clickedPlanet = Object.keys(solarSystem).find(
       (key) => solarSystem[key].hitbox === intersectedObject
     );
 
     if (clickedPlanet && options.focus !== clickedPlanet) {
-      // Change focus to the clicked planet
       changeFocus(options.focus, clickedPlanet);
       options.focus = clickedPlanet;
     }
   }
 });
 
-let focusedPlanet: any = null; // Inicialmente, no hay planeta enfocado
+let focusedPlanet: any = null;
+
+let cameraTransition = {
+  inProgress: false,
+  duration: 1.5,
+  time: 0,
+  fromPosition: new THREE.Vector3(),
+  toPosition: new THREE.Vector3(),
+  fromTarget: new THREE.Vector3(),
+  toTarget: new THREE.Vector3(),
+};
 
 const changeFocus = (oldFocus: string, newFocus: string) => {
   const selectedPlanet = solarSystem[newFocus];
 
-  // Actualiza el planeta enfocado, excepto si es el Sol
-  if (newFocus !== "Sun") {
-    focusedPlanet = selectedPlanet;
-  } else {
-    focusedPlanet = null; // No seguir al Sol
-  }
+  focusedPlanet = newFocus !== "SolarSystem" ? selectedPlanet : null;
 
-  // Actualiza los límites del control y el objetivo
-  const minDistance = selectedPlanet.getMinDistance();
+  let minDistance = selectedPlanet.getMinDistance();
+  if (newFocus === "SolarSystem") {
+    minDistance = 100; // Ajustado para vista más cercana al sistema solar
+  }
   controls.minDistance = minDistance;
-  controls.maxDistance = minDistance * 3;
+  controls.maxDistance = minDistance * 5;
 
-  // Si es el Sol, establecer el objetivo en su posición mundial
-  if (newFocus === "Sun") {
-    const sunPosition = new THREE.Vector3();
-    selectedPlanet.mesh.getWorldPosition(sunPosition);
-    controls.target.copy(sunPosition);
+  cameraTransition.inProgress = true;
+  cameraTransition.time = 0;
+  cameraTransition.duration = 1.5;
+  cameraTransition.fromPosition.copy(camera.position);
+  cameraTransition.fromTarget.copy(controls.target);
+
+  const planetPosition = new THREE.Vector3();
+  selectedPlanet.mesh.getWorldPosition(planetPosition);
+
+  if (newFocus !== "SolarSystem") {
+    const cameraDistance = minDistance * 1.5;
+    cameraTransition.toPosition.set(
+      planetPosition.x + cameraDistance,
+      planetPosition.y + cameraDistance / 2,
+      planetPosition.z + cameraDistance
+    );
+    cameraTransition.toTarget.copy(planetPosition);
+  } else {
+    cameraTransition.toPosition.copy(cameraPositions.solarSystem.position);
+    cameraTransition.toTarget.copy(cameraPositions.solarSystem.target);
   }
 
-  // Actualiza la interfaz y etiquetas
   (document.querySelector(".caption p") as HTMLElement).innerHTML = newFocus;
   solarSystem[oldFocus].labels.hidePOI();
   solarSystem[newFocus].labels.showPOI();
 };
 
 // Camera
-const aspect = sizes.width / sizes.height;
-const camera = new THREE.PerspectiveCamera(60, aspect, 0.1, 1000);
-camera.position.set(0, 20, 50);
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000);
+camera.position.copy(cameraPositions.solarSystem.position);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
+controls.target.copy(cameraPositions.solarSystem.target);
 
-// Start orbit around the Sun's world position
-const sunPosition = new THREE.Vector3();
-solarSystem["Sun"].mesh.getWorldPosition(sunPosition);
-controls.target.copy(sunPosition);
-controls.minDistance = solarSystem["Sun"].getMinDistance();
-controls.maxDistance = 200;
+const minDistance = 50; // Inicialmente más cerca para la vista del sistema solar
+controls.minDistance = minDistance;
+controls.maxDistance = minDistance * 5;
 
 // Label renderer
 const labelRenderer = new CSS2DRenderer();
@@ -179,64 +201,62 @@ bloomComposer.addPass(bloomPass);
 const clock = new THREE.Clock();
 let elapsedTime = 0;
 
-// Agregar listener al botón "Regresar al Sol"
+// Update "Return to Solar System" button
 document.getElementById("btn-sun")?.addEventListener("click", () => {
-  if (options.focus !== "Sun") {
-    changeFocus(options.focus, "Sun");
-    options.focus = "Sun";
-
-    // Posicionar la cámara justo arriba del Sol
-    const sunPosition = new THREE.Vector3();
-    solarSystem["Sun"].mesh.getWorldPosition(sunPosition);
-
-    // Establecer la posición de la cámara sobre el sol en el eje Y
-    camera.position.set(sunPosition.x, sunPosition.y + 50, sunPosition.z);
-    controls.target.copy(sunPosition); // Establecer el objetivo de la cámara al Sol
-    controls.update();
+  if (options.focus !== "SolarSystem") {
+    changeFocus(options.focus, "SolarSystem");
+    options.focus = "SolarSystem";
   }
 });
-(function tick() {
-  elapsedTime += clock.getDelta() * options.speed;
 
-  // Update the solar system objects
+(function tick() {
+  const deltaTime = clock.getDelta();
+  elapsedTime += deltaTime * options.speed;
+
   for (const object of Object.values(solarSystem)) {
     object.tick(elapsedTime);
   }
 
-  // Update camera position to follow the focused planet, except for the Sun
-  if (focusedPlanet) {
+  if (cameraTransition.inProgress) {
+    cameraTransition.time += deltaTime;
+    let t = cameraTransition.time / cameraTransition.duration;
+    if (t >= 1) {
+      t = 1;
+      cameraTransition.inProgress = false;
+    }
+
+    camera.position.lerpVectors(
+      cameraTransition.fromPosition,
+      cameraTransition.toPosition,
+      t
+    );
+    controls.target.lerpVectors(
+      cameraTransition.fromTarget,
+      cameraTransition.toTarget,
+      t
+    );
+  } else if (focusedPlanet) {
     const minDistance = focusedPlanet.getMinDistance();
     const cameraDistance = minDistance * 1.5;
 
-    // Get the world position of the focused planet
     const planetPosition = new THREE.Vector3();
     focusedPlanet.mesh.getWorldPosition(planetPosition);
 
-    // Update camera position to follow the planet's orbit
     camera.position.set(
       planetPosition.x + cameraDistance,
       planetPosition.y + cameraDistance / 2,
       planetPosition.z + cameraDistance
     );
 
-    // Ensure the camera is looking at the planet
-    camera.lookAt(planetPosition);
-
-    // Update controls target
     controls.target.copy(planetPosition);
   }
 
-  // Update controls and camera position
   controls.update();
-
-  // Update labels
   const currentBody = solarSystem[options.focus];
   currentBody.labels.update(camera);
 
-  // Render
   bloomComposer.render();
   labelRenderer.render(scene, camera);
 
-  // Call tick again on the next frame
   window.requestAnimationFrame(tick);
 })();
