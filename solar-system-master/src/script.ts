@@ -283,21 +283,21 @@ document.getElementById("btn-speed")?.addEventListener("click", () => {
   (document.getElementById("btn-speed") as HTMLElement).innerText = ` - x${speedFactor} - `;
 });
 
-// //DESPLEGAR MENU DE OPCIONES PARA ELEGIR JUEGO
-// document.getElementById("btn-options")?.addEventListener("click", () => {
-//   const menuOptions = document.getElementById("menu-options");
-//   menuOptions?.classList.toggle("hidden");
-// });
+//DESPLEGAR MENU DE OPCIONES PARA ELEGIR JUEGO
+document.getElementById("btn-options")?.addEventListener("click", () => {
+  const menuOptions = document.getElementById("menu-options");
+  menuOptions?.classList.toggle("hidden");
+});
 
-// document.getElementById("game-1")?.addEventListener("click", () => {
-//   console.log("Opción 1 seleccionada");
-//   // INSERTAR LOGICA GAME 1
-// });
+document.getElementById("game-1")?.addEventListener("click", () => {
+  console.log("Opción 1 seleccionada");
+  // INSERTAR LOGICA GAME 1
+});
 
-// document.getElementById("game-2")?.addEventListener("click", () => {
-//   console.log("Opción 2 seleccionada");
-//   // INSERTAR LOGICA GAME 2
-// });
+document.getElementById("game-2")?.addEventListener("click", () => {
+  console.log("Opción 2 seleccionada");
+  // INSERTAR LOGICA GAME 2
+});
 
 (function tick() {
   const deltaTime = clock.getDelta();
