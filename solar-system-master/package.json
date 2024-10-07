@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "preinstall": "npm install vite --save-dev",
-  "build": "vite build"
+  "build": "vite build",
+  "start": "vite preview --port $PORT"
   },
   "devDependencies": {
     "@types/three": "^0.154.0",
