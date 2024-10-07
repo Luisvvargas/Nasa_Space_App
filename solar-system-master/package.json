@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
+  "preinstall": "npm install vite --save-dev",
+  "build": "vite build"
   },
   "devDependencies": {
     "@types/three": "^0.154.0",
@@ -22,6 +22,6 @@
     "three": "^0.153.0"
   },
   "engines": {
-  "node": ">=16.0.0"
+  "node": "16.x"
   }
 }
