@@ -350,5 +350,3 @@ document.getElementById("game-2")?.addEventListener("click", () => {
 
   window.requestAnimationFrame(tick);
 })();
-
-exp
