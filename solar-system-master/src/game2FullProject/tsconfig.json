@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noImplicitAny": false,  // Permitir implícitos "any"
+    "allowJs": true,         // Permitir archivos .js/.jsx
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
